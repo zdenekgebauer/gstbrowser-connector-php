@@ -1,3 +1,12 @@
+#uncomment and modify to allow acces from only some IP address
+#Order deny,allow
+#Deny from all
+#Allow from 1.2.3.4
+
 <IfModule mod_headers.c>
-  Header set Access-Control-Allow-Origin "*"
+  Header set X-UA-Compatible "IE=edge"
+
+  #uncomment to allow acces from different domain
+  #Header set Access-Control-Allow-Origin "*"
+
 </IfModule>
