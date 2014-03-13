@@ -320,7 +320,7 @@ class Connector
             umask($oldumask);
 
             clearstatcache();
-            $cache->updateFile($filename);
+            $cache->refresh();
         }
         return $this->_output(0, $this->_getFolderContent($targetDir));
     }
@@ -768,20 +768,12 @@ class CacheDir
         $this->_config = $config;
         $this->_cachefile = $this->_dir.self::CACHE_FILENAME;
         if (is_file($this->_cachefile) && filemtime($this->_cachefile) > time()-7200) {
-            $this->_items = @unserialize(file_get_contents($this->_cachefile));
-        } else {
-            $result = array();
-            $files = glob($this->_dir.'*');
-            $files = (is_array($files) ? $files : array());
-            foreach ($files as $file) {
-                if (substr(basename($file), 0, 3) !== '.ht') {
-                    $fileInfo = new File($file, $this->_config);
-                    $result[basename($file)] = $fileInfo->getParams();
-                }
+            $this->_items = @json_decode(file_get_contents($this->_cachefile));
+            if (!is_array($this->_items)) {
+                $this->refresh();
             }
-            ksort($result);
-            $this->_items = $result;
-            $this->_save();
+        } else {
+            $this->refresh();
         }
     }
 
@@ -792,6 +784,25 @@ class CacheDir
     public function getFiles()
     {
         return is_null($this->_items) ? NULL : array_values($this->_items);
+    }
+
+    /**
+     * refresh cache content
+     */
+    public function refresh()
+    {
+        $result = array();
+        $files = glob($this->_dir.'*');
+        $files = (is_array($files) ? $files : array());
+        foreach ($files as $file) {
+            if (substr(basename($file), 0, 3) !== '.ht') {
+                $fileInfo = new File($file, $this->_config);
+                $result[basename($file)] = $fileInfo->getParams();
+            }
+        }
+        ksort($result);
+        $this->_items = $result;
+        $this->_save();
     }
 
     /**
@@ -822,7 +833,7 @@ class CacheDir
      */
     private function _save()
     {
-        file_put_contents($this->_cachefile, serialize($this->_items));
+        file_put_contents($this->_cachefile, json_encode($this->_items));
     }
 
 }

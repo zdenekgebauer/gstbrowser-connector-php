@@ -94,68 +94,62 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
 
         //cache file
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
         // thumbnails are generated from resized image, ignore diffs
         foreach ($cache as $key=>$value) {
-            if (!is_null($value['thumbnail'])) {
-                $tmp = explode(',', $value['thumbnail']);
-                $cache[$key]['thumbnail'] = reset($tmp);
+            if (!is_null($value->thumbnail)) {
+                $tmp = explode(',', $value->thumbnail);
+                $cache[$key]->thumbnail = reset($tmp);
             }
         }
 
-        $file = array('name' => 'a',
+        $file = (object) array('name' => 'a',
             'type' => 'dir',
             'size' => NULL,
             'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'a')),
             'imgsize' => NULL,
-            'thumbnail' => NULL);
-        $this->assertContains($file, $output['files']);
-        $this->assertContains($file, $cache);
+            'thumbnail' => '');
+        $this->assertEquals($file, $cache['a']);
 
-        $file = array('name' => 'b',
+        $file = (object) array('name' => 'b',
             'type' => 'dir',
             'size' => NULL,
             'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'b')),
             'imgsize' => NULL,
-            'thumbnail' => NULL);
-        $this->assertContains($file, $output['files']);
-        $this->assertContains($file, $cache);
+            'thumbnail' => '');
+        $this->assertEquals($file, $cache['b']);
 
-        $file = array('name' => 'jpeg-image.jpg',
+        $file = (object) array('name' => 'jpeg-image.jpg',
                 'type' => 'file',
                 'size' => filesize(FILEBROWSER_DATA_DIR.'jpeg-image.jpg'),
                 'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'jpeg-image.jpg')),
                 'imgsize' => array (94, 80),
                 'thumbnail' => 'data:image/jpg;base64');
-        $this->assertContains($file, $output['files']);
-        $this->assertContains($file, $cache);
+        $this->assertEquals($file, $cache['jpeg-image.jpg']);
 
-        $file = array('name' => 'gif-image.gif',
+        $file = (object) array('name' => 'gif-image.gif',
                 'type' => 'file',
                 'size' => filesize(FILEBROWSER_DATA_DIR.'gif-image.gif'),
                 'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'gif-image.gif')),
                 'imgsize' => array (94, 80),
                 'thumbnail' => 'data:image/gif;base64');
-        $this->assertContains($file, $output['files']);
-        $this->assertContains($file, $cache);
+        $this->assertEquals($file, $cache['gif-image.gif']);
 
-        $file = array('name' => 'png-image.png',
+        $file = (object) array('name' => 'png-image.png',
                 'type' => 'file',
                 'size' => filesize(FILEBROWSER_DATA_DIR.'png-image.png'),
                 'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'png-image.png')),
                 'imgsize' => array (94, 80),
                 'thumbnail' => 'data:image/png;base64');
-        $this->assertContains($file, $output['files']);
-        $this->assertContains($file, $cache);
+        $this->assertEquals($file, $cache['png-image.png']);
 
-        $file = array('name' => 'txt-file.txt',
+        $file = (object) array('name' => 'txt-file.txt',
                 'type' => 'file',
                 'size' => filesize(FILEBROWSER_DATA_DIR.'txt-file.txt'),
                 'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'txt-file.txt')),
                 'imgsize' => NULL,
                 'thumbnail' => NULL);
-        $this->assertContains($file, $output['files']);
-        $this->assertContains($file, $cache);
+        $this->assertEquals($file, $cache['txt-file.txt']);
     }
 
     public function testFilesInSubfolder()
@@ -250,8 +244,8 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
         $this->assertLessThanOrEqual(50, imagesy($image));
 
         //cache file
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
-        $this->assertEquals($thumbDataUri, $cache["jpeg-image.jpg"]['thumbnail']);
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $this->assertEquals($thumbDataUri, $cache["jpeg-image.jpg"]->thumbnail);
     }
 
     public function testDifferentThumbnailSizePortrait()
@@ -273,8 +267,8 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(50, imagesy($image));
 
         //cache file
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
-        $this->assertEquals($thumbDataUri, $cache["jpeg-image.jpg"]['thumbnail']);
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $this->assertEquals($thumbDataUri, $cache["jpeg-image.jpg"]->thumbnail);
     }
 
 }

@@ -60,8 +60,8 @@ class MkDirTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $output);
         //cache file
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
-        $expect = array('a' => array('name' => 'a',
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $expect = array('a' => (object) array('name' => 'a',
             'type' => 'dir',
             'size' => NULL,
             'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'a')),
@@ -101,15 +101,15 @@ class MkDirTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $output);
         //cache file
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
-        $expect = array(
-            'a' => array('name' => 'a',
+        $cache = json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $expect = (object) array(
+            'a' => (object) array('name' => 'a',
             'type' => 'dir',
             'size' => NULL,
             'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'a')),
             'imgsize' => NULL,
             'thumbnail' => NULL),
-            'b' => array('name' => 'b',
+            'b' => (object) array('name' => 'b',
             'type' => 'dir',
             'size' => NULL,
             'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'b')),
@@ -148,9 +148,9 @@ class MkDirTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $output);
         //cache file
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'a/.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'a/.htdircache'));
-        $expect = array(
-            'aa' => array('name' => 'aa',
+        $cache = json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'a/.htdircache'));
+        $expect = (object) array(
+            'aa' => (object) array('name' => 'aa',
             'type' => 'dir',
             'size' => NULL,
             'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'a/aa')),

@@ -91,7 +91,7 @@ class UploadTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $output);
 
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
         $this->assertEquals(2, count($cache));
     }
 
@@ -101,7 +101,7 @@ class UploadTest extends \PHPUnit_Framework_TestCase
         // get files to create cache file
         $output = $this->_obj->getFiles('');
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
         $this->assertEquals(1, count($cache));
 
         $testfile = sys_get_temp_dir().'/phpunit2.jpg';
@@ -148,7 +148,7 @@ class UploadTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $output);
 
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
         $this->assertEquals(2, count($cache));
     }
 
@@ -211,7 +211,7 @@ class UploadTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $output);
 
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $cache = json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
         $this->assertEquals(1, count($cache));
     }
 

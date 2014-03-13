@@ -42,7 +42,7 @@ class MoveTest extends \PHPUnit_Framework_TestCase
         // get files to create cache file
         $output = $this->_obj->getFiles('');
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
         $this->assertEquals(2, count($cache));
 
         $output = $this->_obj->move('', 'txt-file.txt', 'a');
@@ -61,11 +61,11 @@ class MoveTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFileNotExists(FILEBROWSER_DATA_DIR.'txt-file.txt');
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $cache = json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
         $this->assertEquals(1, count($cache));
 
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'a/.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'a/.htdircache'));
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'a/.htdircache'));
         $this->assertEquals(1, count($cache));
     }
 
@@ -77,7 +77,7 @@ class MoveTest extends \PHPUnit_Framework_TestCase
         // get files to create cache file
         $output = $this->_obj->getFiles('');
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
         $this->assertEquals(2, count($cache));
 
         $output = $this->_obj->move('', 'txt-file.txt', 'a/new.txt');
@@ -95,16 +95,16 @@ class MoveTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $output);
 
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
         $this->assertEquals(1, count($cache));
 
         $this->assertFileNotExists(FILEBROWSER_DATA_DIR.'/txt-file.txt');
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'a/new.txt');
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'a/.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'a/.htdircache'));
+        $cache = json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'a/.htdircache'));
         $this->assertEquals(1, count($cache));
 
-        $expect = array('new.txt'=> array(
+        $expect = (object) array('new.txt'=> (object) array(
             'name' => 'new.txt',
             'type' => 'file',
             'size' => filesize(FILEBROWSER_DATA_DIR.'a/new.txt'),

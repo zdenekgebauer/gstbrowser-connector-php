@@ -41,7 +41,7 @@ class RenameTest extends \PHPUnit_Framework_TestCase
         // get files to create cache file
         $output = $this->_obj->getFiles('');
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $cache = json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
         $this->assertEquals(1, count($cache));
 
         $output = $this->_obj->rename('', 'txt-file.txt', 'newname.txt');
@@ -58,7 +58,7 @@ class RenameTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $output);
 
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
         $this->assertEquals(1, count($cache));
     }
 
@@ -69,7 +69,7 @@ class RenameTest extends \PHPUnit_Framework_TestCase
         // get files to create cache file
         $output = $this->_obj->getFiles('a');
         $this->assertFileExists(FILEBROWSER_DATA_DIR.'a/.htdircache');
-        $cache = unserialize(file_get_contents(FILEBROWSER_DATA_DIR.'a/.htdircache'));
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'a/.htdircache'));
         $this->assertEquals(0, count($cache));
 
         $output = $this->_obj->rename('', 'a', 'b');
