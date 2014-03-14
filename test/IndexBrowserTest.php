@@ -46,31 +46,6 @@ class IndexBrowserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($headers['Content-Type'], 'application/json; charset=utf-8');
     }
 
-//    public function testInvalidConfig()
-//    {
-//        $expect = (object) array(
-//            'status' => 'ERR',
-//            'err' => \GstBrowser\Connector::ERR_MISSING_CONFIG_SECTION
-//        );
-//
-//        $url = FILEBROWSER_URL_CONNECTOR.'?config=invalid';
-//        $output = json_decode(file_get_contents($url));
-//        $this->assertEquals($expect, $output);
-//
-//        $data = array('config' => 'invalid');
-//        $options = array('http' => array(
-//            'method' => 'POST',
-//            'header' => 'Content-type: application/x-www-form-urlencoded',
-//            'content' => http_build_query($data)
-//        ));
-//        $context = stream_context_create($options);
-//        $output = json_decode(file_get_contents($url, false, $context));
-//        $this->assertEquals($expect, $output);
-//
-//        $headers = get_headers($url, 1);
-//        $this->assertEquals($headers['Content-Type'], 'application/json; charset=utf-8');
-//    }
-
     public function testTree()
     {
         mkDirRecursive(FILEBROWSER_DATA_DIR.'a/aa');
@@ -144,6 +119,6 @@ class IndexBrowserTest extends \PHPUnit_Framework_TestCase
             'err'=>  \GstBrowser\Connector::ERR_DIRECTORY_NOT_FOUND
         );
         $this->assertEquals($expect, $output);
-   }
+    }
 
 }

@@ -152,6 +152,77 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($file, $cache['txt-file.txt']);
     }
 
+    public function testFilesInRootWithInvalidCache()
+    {
+        copy (dirname(__DIR__).'/test/phpunit.jpg', FILEBROWSER_DATA_DIR.'jpeg-image.jpg');
+        file_put_contents(FILEBROWSER_DATA_DIR.'.htdircache', '{invalid json');
+
+        $output = $this->_obj->getFiles('');
+        // thumbnails are generated from resized image, ignore diffs
+        for ($index = 0; $index < count($output['files']); $index++) {
+            if (!is_null($output['files'][$index]['thumbnail'])) {
+                $tmp = explode(',', $output['files'][$index]['thumbnail']);
+                $output['files'][$index]['thumbnail'] = reset($tmp);
+            }
+        }
+        $this->assertEquals('OK', $output['status']);
+        $this->assertEquals (1, count($output['files']));
+
+        //cache file
+        $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        // thumbnails are generated from resized image, ignore diffs
+        foreach ($cache as $key=>$value) {
+            if (!is_null($value->thumbnail)) {
+                $tmp = explode(',', $value->thumbnail);
+                $cache[$key]->thumbnail = reset($tmp);
+            }
+        }
+
+        $file = (object) array('name' => 'jpeg-image.jpg',
+                'type' => 'file',
+                'size' => filesize(FILEBROWSER_DATA_DIR.'jpeg-image.jpg'),
+                'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'jpeg-image.jpg')),
+                'imgsize' => array (94, 80),
+                'thumbnail' => 'data:image/jpg;base64');
+        $this->assertEquals($file, $cache['jpeg-image.jpg']);
+    }
+
+    public function testFilesInRootWithInvalidImage()
+    {
+        copy (dirname(__DIR__).'/test/phpunit.txt', FILEBROWSER_DATA_DIR.'jpeg-image.jpg');
+
+        $output = $this->_obj->getFiles('');
+        // thumbnails are generated from resized image, ignore diffs
+        for ($index = 0; $index < count($output['files']); $index++) {
+            if (!is_null($output['files'][$index]['thumbnail'])) {
+                $tmp = explode(',', $output['files'][$index]['thumbnail']);
+                $output['files'][$index]['thumbnail'] = reset($tmp);
+            }
+        }
+        $this->assertEquals('OK', $output['status']);
+        $this->assertEquals (1, count($output['files']));
+
+        //cache file
+        $this->assertFileExists(FILEBROWSER_DATA_DIR.'.htdircache');
+        $cache = (array) json_decode(file_get_contents(FILEBROWSER_DATA_DIR.'.htdircache'));
+        // thumbnails are generated from resized image, ignore diffs
+        foreach ($cache as $key=>$value) {
+            if (!is_null($value->thumbnail)) {
+                $tmp = explode(',', $value->thumbnail);
+                $cache[$key]->thumbnail = reset($tmp);
+            }
+        }
+
+        $file = (object) array('name' => 'jpeg-image.jpg',
+                'type' => 'file',
+                'size' => filesize(FILEBROWSER_DATA_DIR.'jpeg-image.jpg'),
+                'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'jpeg-image.jpg')),
+                'imgsize' => NULL,
+                'thumbnail' => '');
+        $this->assertEquals($file, $cache['jpeg-image.jpg']);
+    }
+
     public function testFilesInSubfolder()
     {
         mkDirRecursive(FILEBROWSER_DATA_DIR.'a/aa');

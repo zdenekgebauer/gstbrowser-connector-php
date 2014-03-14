@@ -65,18 +65,18 @@ class UploadTest extends \PHPUnit_Framework_TestCase
 
         // thumbnails are generated from resized image, ignore diffs
         for ($index = 0; $index < count($output['files']); $index++) {
-            if (!is_null($output['files'][$index]['thumbnail'])) {
-                $output['files'][$index]['thumbnail'] = explode(',', $output['files'][$index]['thumbnail'])[0];
+            if (!is_null($output['files'][$index]->thumbnail)) {
+                $output['files'][$index]->thumbnail = explode(',', $output['files'][$index]->thumbnail)[0];
             }
         }
         $files = array(
-            array('name' => 'phpunit.jpg',
+            (object) array('name' => 'phpunit.jpg',
                 'type' => 'file',
                 'size' => filesize(FILEBROWSER_DATA_DIR.'phpunit.jpg'),
                 'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'phpunit.jpg')),
                 'imgsize' => array(94, 80),
                 'thumbnail' => 'data:image/jpg;base64'),
-            array('name' => 'phpunit2.jpg',
+            (object) array('name' => 'phpunit2.jpg',
                 'type' => 'file',
                 'size' => filesize(FILEBROWSER_DATA_DIR.'phpunit2.jpg'),
                 'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'phpunit2.jpg')),
@@ -121,19 +121,19 @@ class UploadTest extends \PHPUnit_Framework_TestCase
 
         // thumbnails are generated from resized image, ignore diffs
         for ($index = 0; $index < count($output['files']); $index++) {
-            if (!is_null($output['files'][$index]['thumbnail'])) {
-                $output['files'][$index]['thumbnail'] = explode(',', $output['files'][$index]['thumbnail'])[0];
+            if (!is_null($output['files'][$index]->thumbnail)) {
+                $output['files'][$index]->thumbnail = explode(',', $output['files'][$index]->thumbnail)[0];
             }
         }
 
         $files = array(
-            array('name' => 'phpunit.jpg',
+            (object) array('name' => 'phpunit.jpg',
                 'type' => 'file',
                 'size' => filesize(FILEBROWSER_DATA_DIR.'phpunit.jpg'),
                 'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'phpunit.jpg')),
                 'imgsize' => array(94, 80),
                 'thumbnail' => 'data:image/jpg;base64'),
-            array('name' => 'phpunit2.jpg',
+            (object) array('name' => 'phpunit2.jpg',
                 'type' => 'file',
                 'size' => filesize(FILEBROWSER_DATA_DIR.'phpunit2.jpg'),
                 'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'phpunit2.jpg')),
@@ -169,11 +169,11 @@ class UploadTest extends \PHPUnit_Framework_TestCase
         chmod(FILEBROWSER_DATA_DIR.'phpunit.jpg', 0777); // remove read-only attribute on windows
         // thumbnails are generated from resized image, ignore diffs
         for ($index = 0; $index < count($output['files']); $index++) {
-            if (!is_null($output['files'][$index]['thumbnail'])) {
-                $output['files'][$index]['thumbnail'] = explode(',', $output['files'][$index]['thumbnail'])[0];
+            if (!is_null($output['files'][$index]->thumbnail)) {
+                $output['files'][$index]->thumbnail = explode(',', $output['files'][$index]->thumbnail)[0];
             }
         }
-        $files = array(array(
+        $files = array((object) array(
             'name' => 'phpunit.jpg',
             'type' => 'file',
             'size' => filesize(FILEBROWSER_DATA_DIR.'phpunit.jpg'),
@@ -191,13 +191,13 @@ class UploadTest extends \PHPUnit_Framework_TestCase
 
         // thumbnails are generated from resized image, ignore diffs
         for ($index = 0; $index < count($output['files']); $index++) {
-            if (!is_null($output['files'][$index]['thumbnail'])) {
-                $output['files'][$index]['thumbnail'] = explode(',', $output['files'][$index]['thumbnail'])[0];
+            if (!is_null($output['files'][$index]->thumbnail)) {
+                $output['files'][$index]->thumbnail = explode(',', $output['files'][$index]->thumbnail)[0];
             }
         }
 
         $files = array(
-            array('name' => 'phpunit.jpg',
+            (object) array('name' => 'phpunit.jpg',
                 'type' => 'file',
                 'size' => filesize(dirname(__DIR__).'/test/phpunit.jpg'),
                 'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'phpunit.jpg')),

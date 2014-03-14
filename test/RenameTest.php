@@ -45,7 +45,7 @@ class RenameTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($cache));
 
         $output = $this->_obj->rename('', 'txt-file.txt', 'newname.txt');
-        $files = array(array('name' => 'newname.txt',
+        $files = array((object) array('name' => 'newname.txt',
             'type' => 'file',
             'size' => filesize(FILEBROWSER_DATA_DIR.'newname.txt'),
             'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'newname.txt')),
@@ -77,7 +77,7 @@ class RenameTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_dir(FILEBROWSER_DATA_DIR.'b'));
 
         $files = array(
-            array('name' => 'b',
+            (object) array('name' => 'b',
                 'type' => 'dir',
                 'size' => NULL,
                 'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'b')),

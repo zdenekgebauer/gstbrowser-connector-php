@@ -46,7 +46,7 @@ class DeleteTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, count($cache));
 
         $output = $this->_obj->delete('', 'jpeg-image.jpg');
-        $files = array(array('name' => 'txt-file.txt',
+        $files = array((object) array('name' => 'txt-file.txt',
             'type' => 'file',
             'size' => filesize(FILEBROWSER_DATA_DIR.'txt-file.txt'),
             'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'txt-file.txt')),

@@ -46,7 +46,6 @@ class IndexMkDirTest extends \PHPUnit_Framework_TestCase
         ));
         $context = stream_context_create($options);
         $output = json_decode(file_get_contents(FILEBROWSER_URL_CONNECTOR, FALSE, $context));
-        //var_dump($output);
 
         $expectFolder = FILEBROWSER_DATA_DIR.'newfolder';
         $this->assertTrue(is_dir($expectFolder));

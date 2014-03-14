@@ -46,7 +46,7 @@ class MoveTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, count($cache));
 
         $output = $this->_obj->move('', 'txt-file.txt', 'a');
-        $files = array(array(
+        $files = array((object) array(
             'name' => 'a',
             'type' => 'dir',
             'size' => NULL,
@@ -81,7 +81,7 @@ class MoveTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, count($cache));
 
         $output = $this->_obj->move('', 'txt-file.txt', 'a/new.txt');
-        $files = array(array(
+        $files = array((object) array(
             'name' => 'a',
             'type' => 'dir',
             'size' => NULL,

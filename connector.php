@@ -772,9 +772,11 @@ class CacheDir
         $this->_config = $config;
         $this->_cachefile = $this->_dir.self::CACHE_FILENAME;
         if (is_file($this->_cachefile) && filemtime($this->_cachefile) > time()-7200) {
-            $this->_items = @json_decode(file_get_contents($this->_cachefile));
-            if (!is_array($this->_items)) {
+            $this->_items = json_decode(file_get_contents($this->_cachefile));
+            if (is_null($this->_items)) {
                 $this->refresh();
+            } else {
+                $this->_items = (array) $this->_items;
             }
         } else {
             $this->refresh();
@@ -795,17 +797,15 @@ class CacheDir
      */
     public function refresh()
     {
-        $result = array();
         $files = glob($this->_dir.'*');
         $files = (is_array($files) ? $files : array());
         foreach ($files as $file) {
             if (substr(basename($file), 0, 3) !== '.ht') {
-                $fileInfo = new File($file, $this->_config);
-                $result[basename($file)] = $fileInfo->getParams();
+                $this->updateFile(basename($file));
             }
         }
-        ksort($result);
-        $this->_items = $result;
+        $this->_items = is_null($this->_items) ? array() : $this->_items;
+        ksort($this->_items);
         $this->_save();
     }
 

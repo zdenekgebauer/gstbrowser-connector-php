@@ -45,7 +45,7 @@ class MkDirTest extends \PHPUnit_Framework_TestCase
             )
         );
         $files = array(
-            array('name' => 'a',
+            (object) array('name' => 'a',
             'type' => 'dir',
             'size' => NULL,
             'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'a')),
@@ -80,13 +80,13 @@ class MkDirTest extends \PHPUnit_Framework_TestCase
             )
         );
         $files = array(
-            array('name' => 'a',
+            (object) array('name' => 'a',
             'type' => 'dir',
             'size' => NULL,
             'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'a')),
             'imgsize' => NULL,
             'thumbnail' => NULL),
-            array('name' => 'b',
+            (object) array('name' => 'b',
             'type' => 'dir',
             'size' => NULL,
             'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'b')),
@@ -133,7 +133,7 @@ class MkDirTest extends \PHPUnit_Framework_TestCase
             )
         );
         $files = array(
-            array('name' => 'aa',
+            (object) array('name' => 'aa',
             'type' => 'dir',
             'size' => NULL,
             'date' => date('c', filemtime(FILEBROWSER_DATA_DIR.'a/aa')),
