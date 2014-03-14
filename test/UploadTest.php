@@ -38,7 +38,6 @@ class UploadTest extends \PHPUnit_Framework_TestCase
 
     public function testUploadFile()
     {
-        //$this->_obj->setMode(NULL, 0666);
         $testfile = sys_get_temp_dir().'/phpunit.jpg';
         copy (dirname(__DIR__).'/test/phpunit.jpg', $testfile);
         $uploadfiles[] = array(
@@ -289,6 +288,26 @@ class UploadTest extends \PHPUnit_Framework_TestCase
         $expect = array(
             'status'=>'ERR',
             'err'=>\GstBrowser\Connector::ERR_UPLOAD_FILESIZE
+        );
+        $this->assertEquals($expect, $output);
+    }
+
+    public function testUploadToInvalidDirectory()
+    {
+        $testfile = sys_get_temp_dir().'/phpunit.jpg';
+        copy (dirname(__DIR__).'/test/phpunit.jpg', $testfile);
+        $uploadfiles[] = array(
+            'name' => basename($testfile),
+            'type' => 'image/jpeg',
+            'tmp_name' => $testfile,
+            'error' => 0,
+            'size' => 0
+        );
+
+        $output = $this->_obj->upload('notexists', $uploadfiles);
+        $expect = array(
+            'status'=>'ERR',
+            'err'=>\GstBrowser\Connector::ERR_DIRECTORY_NOT_FOUND
         );
         $this->assertEquals($expect, $output);
     }

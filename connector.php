@@ -290,6 +290,10 @@ class Connector
     public function upload($path, $files)
     {
         $targetDir = $this->_targetDir($path);
+        if (!is_dir($targetDir)) {
+            return $this->_output(self::ERR_DIRECTORY_NOT_FOUND);
+        }
+
         $cache = new CacheDir($targetDir, $this->_config);
 
         foreach ($files as $field) {
