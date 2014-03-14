@@ -52,6 +52,7 @@ class Config
      * sets mode for new directories and files
      * @param octal $modeDir
      * @param octal $modeFile
+     * @deprecated use modeDir(), modeFile()
      */
     public function setMode($modeDir, $modeFile)
     {
@@ -109,20 +110,28 @@ class Config
     }
 
     /**
-     * returns mode for new files
+     * sets and returns mode for new files
+     * @param octal $value
      * @return octal
      */
-    public function modeFile()
+    public function modeFile($value = NULL)
     {
+        if (!is_null($value)) {
+            $this->_modeFile = $value;
+        }
         return $this->_modeFile;
     }
 
     /**
-     * returns mode for new folders
+     * sets and returns mode for new folders
+     * @param octal $value
      * @return octal
      */
-    public function modeDir()
+    public function modeDir($value = NULL)
     {
+        if (!is_null($value)) {
+            $this->_modeDir = $value;
+        }
         return $this->_modeDir;
     }
 

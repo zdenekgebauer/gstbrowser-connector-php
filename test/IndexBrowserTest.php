@@ -1,7 +1,7 @@
 <?php
 /**
- * @package GstBrowser
- * @author  Zdenek Gebauer <zdenek.gebauer@gmail.com>
+ * @package    GstLib
+ * @subpackage FileBrowserTest
  */
 
 require_once 'bootstrap.php';
@@ -21,6 +21,8 @@ class IndexBrowserTest extends \PHPUnit_Framework_TestCase
     {
         rmDirRecursive(FILEBROWSER_DATA_DIR);
         mkDirRecursive(FILEBROWSER_DATA_DIR);
+        copy(dirname(__FILE__).'/config.php', dirname(__DIR__).'/config.php');
+        date_default_timezone_set('UTC');
     }
 
     /**
@@ -30,6 +32,7 @@ class IndexBrowserTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         rmDirRecursive(FILEBROWSER_DATA_DIR);
+        unlink(dirname(__DIR__).'/config.php');
     }
 
     public function testWithoutParams()

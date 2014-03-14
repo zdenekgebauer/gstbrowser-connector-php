@@ -59,22 +59,13 @@ namespace GstBrowser;
 //error_reporting(E_ALL);
 //ini_set('display_errors', 'on');
 
-// example of check access by session - uncomment and modify if need
-//if (!isset($_SESSION)) {
-//    session_start();
-//}
-//if (!isset($_SESSION['somevariable']) || $_SESSION['somevariable'] !== 'somevalue') {
-//    header('HTTP/1.0 403 Forbidden');
-//    die('You are not allowed');
-//}
+if (file_exists('config.php')) {
+    include 'config.php';
+} else {
+    header('HTTP/1.0 500 Internal Server Error');
+    die('config.php missing');
+}
 
-// example of check access by IP address - uncomment and modify if need
-//if (!in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1'))) {
-//    header('HTTP/1.0 403 Forbidden');
-//    die('Your IP addres is not allowed');
-//}
-
-require_once 'connector.php';
 
 $config = (isset($_GET['config']) ? trim(strip_tags($_GET['config'])) : NULL);
 if (is_null($config)) {
@@ -92,20 +83,43 @@ if ($path === '') {
 }
 $path = trim($path, '/');
 
-switch ($config) {
-    case 'test':
-        require 'test/bootstrap.php';
-        $connectorConfig = new \GstBrowser\Config(FILEBROWSER_DATA_DIR);
-        $connectorConfig->setMode(0777, 0666);
-        break;
-    case 'demo':
-        $connectorConfig = new \GstBrowser\Config('d:/temp/');
-        break;
-    default:
-        $connectorConfig = new \GstBrowser\Config(__DIR__);
-        $connectorConfig->setMode(0755, 0644);
-        $connectorConfig->overwrite(TRUE);
-        $connectorConfig->thumbMaxSize(90, 90);
+// check access by session variable
+if (!empty($gstbrowserConf[$config]['sess_variable']) && !empty($gstbrowserConf[$config]['sess_value'])) {
+    if (!isset($_SESSION)) {
+        session_start();
+    }
+    if (!isset($gstbrowserConf[$config]['sess_variable'])
+            || $_SESSION[$gstbrowserConf[$config]['sess_variable']] !== $gstbrowserConf[$config]['sess_value']) {
+        header('HTTP/1.0 403 Forbidden');
+        die('You are not allowed');
+    }
+}
+
+// check access by IP
+if (!empty($gstbrowserConf[$config]['allow_ip'])
+        && !in_array($_SERVER['REMOTE_ADDR'], $gstbrowserConf[$config]['allow_ip'])) {
+    header('HTTP/1.0 403 Forbidden');
+    die('Your IP addres is not allowed');
+}
+
+require_once 'connector.php';
+
+$connectorConfig = new Config($gstbrowserConf['default']['root_dir']);
+
+if (isset($gstbrowserConf[$config]['root_dir'])) {
+    $connectorConfig->baseDir($gstbrowserConf[$config]['root_dir']);
+}
+if (isset($gstbrowserConf[$config]['mode_dir'])) {
+    $connectorConfig->modeDir($gstbrowserConf[$config]['mode_dir']);
+}
+if (isset($gstbrowserConf[$config]['mode_file'])) {
+    $connectorConfig->modeFile($gstbrowserConf[$config]['mode_file']);
+}
+if (isset($gstbrowserConf[$config]['thumb_width'])) {
+    $connectorConfig->thumbWidth($gstbrowserConf[$config]['thumb_width']);
+}
+if (isset($gstbrowserConf[$config]['thumb_height'])) {
+    $connectorConfig->thumbWidth($gstbrowserConf[$config]['thumb_height']);
 }
 
 $con = new \GstBrowser\Connector($connectorConfig);

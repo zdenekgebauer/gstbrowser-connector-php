@@ -22,7 +22,10 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
         rmDirRecursive(FILEBROWSER_DATA_DIR);
         mkDirRecursive(FILEBROWSER_DATA_DIR);
         date_default_timezone_set('UTC');
-        $this->_obj = new \GstBrowser\Connector(new \GstBrowser\Config(FILEBROWSER_DATA_DIR));
+        $config = new \GstBrowser\Config(FILEBROWSER_DATA_DIR);
+        $config->modeDir(0777);
+        $config->modeFile(0666);
+        $this->_obj = new \GstBrowser\Connector($config);
     }
 
     /**
